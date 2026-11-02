@@ -15,8 +15,8 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: brand.colors.board,
-          color: brand.colors["on-board"],
+          background: brand.colors.dark,
+          color: brand.colors["on-dark"],
         }}
       >
         <Mark size={130} />

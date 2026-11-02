@@ -24,15 +24,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: brand.colors.board,
+  themeColor: brand.colors.dark,
 };
 
-// brand.colors -> :root custom variables (--board, --paper, ...)
+// brand.colors -> :root custom variables (--dark, --cream, --accent, ...)
 const colorVars = `:root{${Object.entries(brand.colors)
   .map(([key, value]) => `--${key}:${value}`)
   .join(";")}}`;
 
-const gaId = process.env.NEXT_PUBLIC_GA_ID;
+const gaId = process.env.NEXT_PUBLIC_GA4_ID;
 const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-IN"
-      className={`${brand.fonts.heading.variable} ${brand.fonts.body.variable} h-full antialiased`}
+      className={`${brand.fonts.display.variable} ${brand.fonts.body.variable} h-full antialiased`}
     >
       <head>
         <style dangerouslySetInnerHTML={{ __html: colorVars }} />

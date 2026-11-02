@@ -1,5 +1,5 @@
 import { brand } from "@/config/brand";
-import { getPosts } from "@/lib/content";
+import { getPosts } from "@/lib/blog";
 
 // llms.txt: a short, plain summary for AI crawlers. Built from the same config and posts as the site.
 export async function GET() {

@@ -5,23 +5,25 @@ import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, ChevronDown, Clock, ShieldCheck } from "lucide-react";
+import { ArrowRight, Layers, Link2, Lock, MapPin, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { categories, site } from "@/content/site";
-import { track, readUtm } from "@/lib/analytics";
-import { checkInputSchema, type CheckInput } from "@/lib/check/schema";
-import { Field, controlClass } from "./field";
+import { Select } from "@/components/ui/select";
+import { categories, errorCopy } from "@/content/check";
+import { home } from "@/content/home";
+import { readUtm, track } from "@/lib/analytics";
+import { checkInputSchema, type CheckInput } from "@/lib/schemas";
 
-const f = site.hero.form;
+const f = home.hero.form;
 const turnstileKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
-// The booking slip: three fields, one amber action. `location` names where the form sits for analytics.
+// The cream booking card. `location` names where the form sits, for analytics.
 export function CheckForm({ location }: { location: "hero" | "final" }) {
   const router = useRouter();
   const uid = useId();
   const [serverError, setServerError] = useState<string | null>(null);
-  const [navigating, startTransition] = useTransition(); // disables the button until /check loads
+  const [navigating, startTransition] = useTransition(); // keeps the button disabled until /check loads
   const {
     register,
     handleSubmit,
@@ -39,21 +41,25 @@ export function CheckForm({ location }: { location: "hero" | "final" }) {
     setServerError(null);
     track("check_started", { location });
     // Cloudflare's widget writes its token into a hidden field named cf-turnstile-response.
-    const turnstileToken = new FormData(event?.target as HTMLFormElement).get("cf-turnstile-response");
+    const token = new FormData(event?.target as HTMLFormElement).get("cf-turnstile-response");
     try {
-      const res = await fetch("/api/check/start", {
+      const res = await fetch("/api/check", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...values, turnstileToken, utm: readUtm() }),
+        body: JSON.stringify({
+          ...values,
+          turnstileToken: typeof token === "string" ? token : undefined,
+          utm: readUtm(),
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setServerError(data.error ?? "Something went wrong. Please try again.");
+        setServerError(data.error ?? errorCopy.generic);
         return;
       }
-      startTransition(() => router.push(`/check?id=${data.id}`));
+      startTransition(() => router.push(`/check/${data.id}`));
     } catch {
-      setServerError("We could not reach the server. Check your connection and try again.");
+      setServerError(errorCopy.network);
     }
   }
 
@@ -61,18 +67,23 @@ export function CheckForm({ location }: { location: "hero" | "final" }) {
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
+      data-tone="cream"
       aria-labelledby={`${uid}-title`}
-      className="on-paper rounded-lg border-t-[6px] border-t-board bg-slip p-5 text-ink shadow-[0_10px_30px_-12px_rgb(7_27_61/0.55)] sm:p-6"
+      className="rounded-[20px] p-5 shadow-[0_24px_60px_-24px_rgb(0_0_0/0.6)] sm:p-7"
     >
-      <h2 id={`${uid}-title`} className="text-2xl font-bold leading-tight">
+      <h2 id={`${uid}-title`} className="text-[1.65rem] leading-tight sm:text-[1.9rem]">
         {f.title}
       </h2>
-      <p className="mt-1 text-[0.95rem] text-ink-muted">{f.intro}</p>
+      <p className="mt-1.5 text-[0.95rem] text-tone-muted">
+        <span className="sm:hidden">{f.introShort}</span>
+        <span className="hidden sm:inline">{f.intro}</span>
+      </p>
 
-      <div className="mt-4 grid gap-3.5 border-t border-dashed border-rule pt-4">
-        <Field id={ids.url} label={f.url.label} error={errors.url?.message}>
+      <div className="mt-4 grid gap-3">
+        <Field id={ids.url} label={f.url.label} error={errors.url?.message} className="[&>label]:sr-only">
           <Input
             id={ids.url}
+            icon={Link2}
             type="text"
             inputMode="url"
             autoComplete="url"
@@ -81,84 +92,74 @@ export function CheckForm({ location }: { location: "hero" | "final" }) {
             placeholder={f.url.placeholder}
             aria-invalid={!!errors.url}
             aria-describedby={describe("url")}
-            className={controlClass}
             {...register("url")}
           />
         </Field>
 
-        <Field id={ids.category} label={f.category.label} error={errors.category?.message}>
-          <div className="relative">
-            <select
-              id={ids.category}
-              defaultValue=""
-              aria-invalid={!!errors.category}
-              aria-describedby={describe("category")}
-              className={`${controlClass} appearance-none pr-10`}
-              {...register("category")}
-            >
-              <option value="" disabled>
-                {f.category.placeholder}
+        <Field id={ids.category} label={f.category.label} error={errors.category?.message} className="[&>label]:sr-only">
+          <Select
+            id={ids.category}
+            icon={Layers}
+            defaultValue=""
+            aria-invalid={!!errors.category}
+            aria-describedby={describe("category")}
+            {...register("category")}
+          >
+            <option value="" disabled>
+              {f.category.placeholder}
+            </option>
+            {categories.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
               </option>
-              {categories.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown
-              aria-hidden
-              className="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-ink-muted"
-            />
-          </div>
+            ))}
+          </Select>
         </Field>
 
-        <Field id={ids.city} label={f.city.label} error={errors.city?.message}>
+        <Field id={ids.city} label={f.city.label} error={errors.city?.message} className="[&>label]:sr-only">
           <Input
             id={ids.city}
+            icon={MapPin}
             type="text"
             autoComplete="address-level2"
             placeholder={f.city.placeholder}
             aria-invalid={!!errors.city}
             aria-describedby={describe("city")}
-            className={controlClass}
             {...register("city")}
           />
         </Field>
 
         {turnstileKey && (
           <>
-            <Script
-              id="turnstile"
-              src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-              strategy="lazyOnload"
-            />
+            <Script id="turnstile" src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="lazyOnload" />
             <div className="cf-turnstile" data-sitekey={turnstileKey} data-appearance="interaction-only" />
           </>
         )}
 
         {serverError && (
-          <p role="alert" className="text-sm font-medium text-missing">
+          <p role="alert" className="text-sm font-medium text-danger">
             {serverError}
           </p>
         )}
 
         <Button
           type="submit"
+          size="lg"
           disabled={busy}
-          className="h-12 w-full gap-2 rounded-md bg-signal text-base font-semibold text-on-signal hover:bg-signal/90"
+          className="mt-1 w-full"
           onClick={() => track("cta_clicked", { location: `${location}_form` })}
         >
           {busy ? f.submitting : f.submit}
-          {!busy && <ArrowRight aria-hidden className="size-5" />}
+          {!busy && <ArrowRight aria-hidden />}
         </Button>
 
-        <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-muted">
+        <p className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-tone-muted">
           <span className="inline-flex items-center gap-1.5">
-            <Clock aria-hidden className="size-4" />
+            <Zap aria-hidden className="size-3.5" />
             {f.notes[0]}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <ShieldCheck aria-hidden className="size-4" />
+            <Lock aria-hidden className="size-3.5" />
             {f.notes[1]}
           </span>
         </p>

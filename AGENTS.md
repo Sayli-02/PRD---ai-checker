@@ -1,3 +1,7 @@
+## Read first
+
+Read `CURSOR_PLAN.md` (the build plan, phases and rules) and `docs/PRD — AI Visibility Landing Page (Codename Project Cite).md` before any change. The visual source of truth is `design/Sample Dashboard.png`. Work phase by phase; do not start a phase until the previous phase's acceptance checks pass. One pull request per phase. The always-on rule is `.cursor/rules/cursor-plan.mdc`.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

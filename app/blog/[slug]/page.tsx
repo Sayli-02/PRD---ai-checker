@@ -10,7 +10,7 @@ import { JsonLd } from "@/components/json-ld";
 import { PageShell } from "@/components/page-shell";
 import { brand } from "@/config/brand";
 import { formatDate, headings, related, slugify } from "@/lib/blog";
-import { getPost, getPosts } from "@/lib/content";
+import { getPost, getPosts } from "@/lib/blog";
 
 export async function generateStaticParams() {
   return (await getPosts()).map((p) => ({ slug: p.slug }));
@@ -58,8 +58,8 @@ const components = {
       <table className="w-full border-collapse text-left" {...props} />
     </div>
   ),
-  th: (props: React.ComponentProps<"th">) => <th className="border-b-2 border-ink px-3 py-2 font-semibold" {...props} />,
-  td: (props: React.ComponentProps<"td">) => <td className="border-b border-rule px-3 py-2" {...props} />,
+  th: (props: React.ComponentProps<"th">) => <th className="border-b-2 border-on-cream px-3 py-2 font-semibold" {...props} />,
+  td: (props: React.ComponentProps<"td">) => <td className="border-b border-line-cream px-3 py-2" {...props} />,
 };
 
 export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
@@ -123,7 +123,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
       />
 
       <article className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 md:py-14">
-        <nav aria-label="Breadcrumb" className="text-sm text-ink-muted">
+        <nav aria-label="Breadcrumb" className="text-sm text-tone-muted">
           <ol className="flex flex-wrap gap-1.5">
             <li>
               <Link href="/" className="underline">
@@ -143,12 +143,12 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
 
         <h1 className="mt-4 text-4xl leading-tight font-bold sm:text-6xl">{post.title}</h1>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-rule py-3 text-sm">
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-line-cream py-3 text-sm">
           <span className="inline-flex items-center gap-2 font-semibold">
             {post.authorPhoto ? (
               <Image src={post.authorPhoto} alt="" width={32} height={32} className="size-8 rounded-full object-cover" />
             ) : (
-              <span aria-hidden className="grid size-8 place-items-center rounded-full bg-board text-xs text-on-board">
+              <span aria-hidden className="grid size-8 place-items-center rounded-full bg-dark text-xs text-on-dark">
                 {post.author
                   .split(" ")
                   .map((w) => w[0])
@@ -158,15 +158,15 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
             )}
             {post.author}
           </span>
-          <span className="text-ink-muted">
+          <span className="text-tone-muted">
             Published <time dateTime={post.date}>{formatDate(post.date)}</time>
           </span>
           {post.updated !== post.date && (
-            <span className="text-ink-muted">
+            <span className="text-tone-muted">
               Updated <time dateTime={post.updated}>{formatDate(post.updated)}</time>
             </span>
           )}
-          <span className="text-ink-muted">{post.readingMinutes} min read</span>
+          <span className="text-tone-muted">{post.readingMinutes} min read</span>
         </div>
 
         {post.coverImage && (
@@ -182,8 +182,8 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
         )}
 
         {toc.length > 2 && (
-          <nav aria-labelledby="toc-title" className="mt-8 rounded-lg bg-paper-deep p-5">
-            <p id="toc-title" className="font-heading text-xl font-semibold">
+          <nav aria-labelledby="toc-title" className="mt-8 rounded-card bg-surface-cream p-5">
+            <p id="toc-title" className="font-serif text-xl">
               In this post
             </p>
             <ol className="mt-2 list-decimal space-y-1 pl-5">
@@ -209,11 +209,11 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
             <h2 id="faq-title" className="text-3xl font-bold sm:text-4xl">
               Frequently asked questions
             </h2>
-            <dl className="mt-4 divide-y divide-rule border-y border-rule">
+            <dl className="mt-4 divide-y divide-line-cream border-y border-line-cream">
               {post.faq.map((f) => (
                 <div key={f.question} className="py-4">
                   <dt className="text-xl font-semibold">{f.question}</dt>
-                  <dd className="mt-1 text-lg text-ink-muted">{f.answer}</dd>
+                  <dd className="mt-1 text-lg text-tone-muted">{f.answer}</dd>
                 </div>
               ))}
             </dl>
@@ -224,7 +224,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
       </article>
 
       {more.length > 0 && (
-        <section aria-labelledby="related-title" className="bg-paper-deep">
+        <section aria-labelledby="related-title" className="bg-cream">
           <div className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8">
             <h2 id="related-title" className="text-3xl font-bold sm:text-4xl">
               Related posts

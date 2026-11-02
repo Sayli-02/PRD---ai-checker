@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { brand } from "@/config/brand";
 import { Mark } from "@/components/mark";
-import { site } from "@/content/site";
+import { home } from "@/content/home";
 
 export const alt = `${brand.name}: get found on Google and named by AI`;
 export const size = { width: 1200, height: 630 };
@@ -18,17 +18,19 @@ export default function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: c.board,
-          color: c["on-board"],
+          background: c.dark,
+          color: c["on-dark"],
           padding: 72,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 44, fontWeight: 700 }}>
           <Mark size={64} />
-          {brand.name}
+          <span>{brand.name}</span>
         </div>
-        <div style={{ fontSize: 88, fontWeight: 700, lineHeight: 1.05, maxWidth: 980 }}>{site.hero.title}</div>
-        <div style={{ display: "flex", height: 10, width: 220, background: c.signal }} />
+        <div style={{ display: "flex", fontSize: 88, fontWeight: 700, lineHeight: 1.05, maxWidth: 980 }}>
+          {`${home.hero.titleLead} ${home.hero.titleAccent}`}
+        </div>
+        <div style={{ display: "flex", height: 10, width: 220, background: c.accent }} />
       </div>
     ),
     size,

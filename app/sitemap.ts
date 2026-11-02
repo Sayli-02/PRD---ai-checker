@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { brand } from "@/config/brand";
-import { getPosts } from "@/lib/content";
+import { getPosts } from "@/lib/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPosts();

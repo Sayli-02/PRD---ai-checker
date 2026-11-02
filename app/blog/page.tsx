@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { PostCard } from "@/components/blog/post-card";
 import { PageShell } from "@/components/page-shell";
 import { POSTS_PER_PAGE } from "@/lib/blog";
-import { getPosts } from "@/lib/content";
+import { getPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -17,7 +17,7 @@ export default function BlogIndex({ searchParams }: PageProps<"/blog">) {
     <PageShell>
       <div className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 md:py-16">
         <h1 className="text-5xl font-bold sm:text-6xl">Blog</h1>
-        <Suspense fallback={<p className="mt-8 text-ink-muted">Loading posts…</p>}>
+        <Suspense fallback={<p className="mt-8 text-tone-muted">Loading posts…</p>}>
           <PostList searchParams={searchParams} />
         </Suspense>
       </div>
@@ -52,7 +52,7 @@ async function PostList({ searchParams }: { searchParams: PageProps<"/blog">["se
             href={href(1, c)}
             aria-current={c === category ? "page" : undefined}
             className={`rounded-md border px-3.5 py-1.5 font-semibold ${
-              c === category ? "border-board bg-board text-on-board" : "border-rule bg-slip hover:border-board"
+              c === category ? "border-accent-strong bg-accent-strong text-on-dark" : "border-line-cream bg-surface-cream hover:border-accent-strong"
             }`}
           >
             {c ?? "All"}
@@ -61,7 +61,7 @@ async function PostList({ searchParams }: { searchParams: PageProps<"/blog">["se
       </nav>
 
       {posts.length === 0 ? (
-        <p className="mt-10 text-lg text-ink-muted">No posts yet.</p>
+        <p className="mt-10 text-lg text-tone-muted">No posts yet.</p>
       ) : (
         <div className="mt-10 grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
@@ -71,7 +71,7 @@ async function PostList({ searchParams }: { searchParams: PageProps<"/blog">["se
       )}
 
       {pages > 1 && (
-        <nav aria-label="Pages" className="mt-12 flex items-center justify-between border-t border-rule pt-5">
+        <nav aria-label="Pages" className="mt-12 flex items-center justify-between border-t border-line-cream pt-5">
           {page > 1 ? (
             <Link href={href(page - 1)} className="font-semibold underline">
               Newer posts
@@ -79,7 +79,7 @@ async function PostList({ searchParams }: { searchParams: PageProps<"/blog">["se
           ) : (
             <span />
           )}
-          <span className="text-ink-muted">
+          <span className="text-tone-muted">
             Page {page} of {pages}
           </span>
           {page < pages ? (

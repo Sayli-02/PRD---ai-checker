@@ -20,8 +20,8 @@ export default async function Icon({ id }: { id: Promise<string | number> }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: brand.colors.board,
-          color: brand.colors["on-board"],
+          background: brand.colors.dark,
+          color: brand.colors["on-dark"],
         }}
       >
         <Mark size={Math.round(size * 0.72)} />
