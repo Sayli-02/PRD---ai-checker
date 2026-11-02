@@ -30,7 +30,8 @@ const schema = z
     IP_HASH_SALT: text,
   })
   .superRefine((env, ctx) => {
-    if (process.env.NODE_ENV !== "production") return;
+    // Preview/dev can boot without every vendor key. Only the live Production URL is strict.
+    if (process.env.VERCEL_ENV ? process.env.VERCEL_ENV !== "production" : process.env.NODE_ENV !== "production") return;
     const required = [
       "SUPABASE_URL",
       "SUPABASE_SERVICE_ROLE_KEY",

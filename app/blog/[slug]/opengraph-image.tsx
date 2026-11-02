@@ -30,9 +30,9 @@ export default async function PostOgImage({ params }: { params: Promise<{ slug: 
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 40, fontWeight: 700 }}>
           <Mark size={56} />
-          {brand.name}
+          <span>{brand.name}</span>
         </div>
-        <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.08, maxWidth: 1040 }}>
+        <div style={{ display: "flex", fontSize: 72, fontWeight: 700, lineHeight: 1.08, maxWidth: 1040 }}>
           {post?.title ?? brand.name}
         </div>
         <div style={{ display: "flex", fontSize: 32, color: c["muted-on-dark"] }}>
