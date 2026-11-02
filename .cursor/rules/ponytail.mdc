@@ -1,0 +1,13 @@
+---
+description: Ponytail gate before every build action
+alwaysApply: true
+---
+
+Before every action that writes code, adds a file, or adds a dependency, run the Ponytail skill (`~/.agents/skills/ponytail/SKILL.md`, level `full`) and print one line before acting:
+
+`Ponytail: <reuse | platform | installed dep | new code> — <what>; skipped: <what>`
+
+- Walk the ladder in order: does it need to exist, already in the repo, Next.js/web platform feature, installed dependency, one line, minimum code.
+- Never cut: validation at trust boundaries, security, accessibility, anything in the PRD or `IMPLEMENTATION_PLAN.md`.
+- Design decisions (layout, type, colour, motion) belong to Impeccable; Ponytail decides how little code delivers them, not whether they ship.
+- Run `/ponytail-review` before every pull request.
