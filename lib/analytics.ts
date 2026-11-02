@@ -25,22 +25,27 @@ export function track(event: string, params: Params = {}, eventId?: string) {
 }
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid"];
-const STORE = "utm";
+const COOKIE = "cite_utm";
 
+export function readUtm(): Record<string, string> {
+  try {
+    const raw = document.cookie.split("; ").find((c) => c.startsWith(`${COOKIE}=`));
+    return raw ? JSON.parse(decodeURIComponent(raw.slice(COOKIE.length + 1))) : {};
+  } catch {
+    return {};
+  }
+}
+
+/** First touch wins: UTMs from the first landing are kept for 30 days in a cookie. */
 export function captureUtm() {
+  if (Object.keys(readUtm()).length) return;
   const search = new URLSearchParams(window.location.search);
   const found: Record<string, string> = {};
   for (const key of UTM_KEYS) {
     const value = search.get(key);
     if (value) found[key] = value.slice(0, 200);
   }
-  if (Object.keys(found).length) sessionStorage.setItem(STORE, JSON.stringify(found));
-}
-
-export function readUtm(): Record<string, string> {
-  try {
-    return JSON.parse(sessionStorage.getItem(STORE) ?? "{}");
-  } catch {
-    return {};
+  if (Object.keys(found).length) {
+    document.cookie = `${COOKIE}=${encodeURIComponent(JSON.stringify(found))}; max-age=2592000; path=/; samesite=lax`;
   }
 }

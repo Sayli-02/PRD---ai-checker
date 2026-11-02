@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { brand } from "@/config/brand";
 import { Mark } from "@/components/mark";
-import { getPost, getPosts } from "@/lib/content";
+import { getPost, getPosts } from "@/lib/blog";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -23,8 +23,8 @@ export default async function PostOgImage({ params }: { params: Promise<{ slug: 
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: c.board,
-          color: c["on-board"],
+          background: c.dark,
+          color: c["on-dark"],
           padding: 72,
         }}
       >
@@ -35,7 +35,7 @@ export default async function PostOgImage({ params }: { params: Promise<{ slug: 
         <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.08, maxWidth: 1040 }}>
           {post?.title ?? brand.name}
         </div>
-        <div style={{ display: "flex", fontSize: 32, color: c["on-board-muted"] }}>
+        <div style={{ display: "flex", fontSize: 32, color: c["muted-on-dark"] }}>
           {post?.category ?? ""}
         </div>
       </div>

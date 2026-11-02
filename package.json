@@ -1,5 +1,5 @@
 {
-  "name": "citara",
+  "name": "citeo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test lib/check/analyze.test.ts"
+    "test": "node --test lib/scoring.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

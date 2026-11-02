@@ -1,5 +1,5 @@
 import { brand } from "@/config/brand";
-import { getPosts } from "@/lib/content";
+import { getPosts } from "@/lib/blog";
 
 const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

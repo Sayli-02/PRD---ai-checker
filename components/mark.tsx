@@ -1,10 +1,10 @@
-// A C ring with a square berth in its opening: "cite" plus a point that is picked out.
-// One colour (currentColor), still reads at 32 x 32. Master file: public/brand/mark.svg.
+// Two leaning strokes that meet at a peak, as in the reference logo: a lavender stroke and a light one.
+// Master file: public/brand/mark.svg. Colours come from brand tokens; the light stroke follows currentColor.
 export function Mark({ size = 28 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M25.5 9.5A11 11 0 1 0 25.5 22.5" stroke="currentColor" strokeWidth="5" />
-      <rect x="21.5" y="13.5" width="5" height="5" fill="currentColor" />
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
+      <path d="M3 28 13.5 5h5L8 28z" fill="var(--accent)" />
+      <path d="M15.5 28 21 16l3.5 7.5L29 28z" fill="currentColor" />
     </svg>
   );
 }

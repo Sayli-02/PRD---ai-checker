@@ -1,0 +1,13 @@
+---
+description: Read the build plan, PRD and sample dashboard before any change
+alwaysApply: true
+---
+
+Read `CURSOR_PLAN.md`, `docs/PRD — AI Visibility Landing Page (Codename Project Cite).md` and look at `design/Sample Dashboard.png` before writing code.
+
+- Work phase by phase. Do not start a phase until the previous phase's acceptance checks pass. One pull request per phase.
+- Match the reference exactly for layout, spacing, radius, type and colour. Measure from the image rather than guessing.
+- Brand, copy and colours come from `config/brand.ts`, `content/*.ts` and CSS variables. Never hard-code them.
+- Never invent proof (logos, testimonials, check counts). Hide anything unreal behind a feature flag.
+- No secrets in code. Env vars go in `.env.example`.
+- Consult Ponytail before writing code, adding a file, or adding a dependency.

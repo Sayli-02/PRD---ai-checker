@@ -1,12 +1,12 @@
-import { Footer } from "@/components/sections/footer";
-import { Header } from "@/components/sections/header";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 
-// Header + main + footer for every page that is not the landing page.
-export function PageShell({ children }: { children: React.ReactNode }) {
+// Header + main + footer for every page that is not the landing page. `tone` is the reading surface.
+export function PageShell({ children, tone = "cream" }: { children: React.ReactNode; tone?: "cream" | "dark" }) {
   return (
     <>
-      <Header />
-      <main id="main" className="on-paper flex-1 bg-paper">
+      <Header ctaHref="/#check" />
+      <main id="main" data-tone={tone} className="flex-1">
         {children}
       </main>
       <Footer />
