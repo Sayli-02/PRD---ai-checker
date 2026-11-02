@@ -1,0 +1,23 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { track } from "@/lib/analytics";
+
+// Mid-post and end-of-post call to action. Sends the reader to the form on the home page.
+export function CheckCta({ location }: { location: "post_mid" | "post_end" }) {
+  return (
+    <aside className="on-board my-10 rounded-lg bg-board p-5 text-on-board sm:p-6">
+      <p className="font-heading text-3xl leading-tight font-bold">Is AI naming your business?</p>
+      <p className="mt-2 text-on-board-muted">Run the free AI Visibility Check. It takes under 60 seconds.</p>
+      <Link
+        href="/#check"
+        onClick={() => track("cta_clicked", { location })}
+        className="mt-4 inline-flex h-12 items-center gap-2 rounded-md bg-signal px-5 font-semibold text-on-signal hover:bg-signal/90"
+      >
+        Run free check
+        <ArrowRight aria-hidden className="size-5" />
+      </Link>
+    </aside>
+  );
+}

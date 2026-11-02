@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored skill tooling, not part of the site.
+    ".cursor/**",
+    ".impeccable/**",
   ]),
 ]);
 
